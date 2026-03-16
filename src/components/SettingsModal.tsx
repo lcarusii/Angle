@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Settings, X, Cpu, CheckCircle2, AlertCircle, Link as LinkIcon, Key } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { safeFetchJson } from '../utils/fetch';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -35,7 +36,7 @@ export function SettingsModal({ isOpen, onClose, selectedModel, onModelChange, a
     setTesting(true);
     setTestResult(null);
     try {
-      const response = await fetch('/api/test-connection', {
+      await safeFetchJson('/api/test-connection', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -45,14 +46,9 @@ export function SettingsModal({ isOpen, onClose, selectedModel, onModelChange, a
           volcengine_api_key: volcengineApiKey
         })
       });
-      const data = await response.json();
-      if (response.ok) {
-        setTestResult({ success: true, message: '连接成功！' });
-      } else {
-        setTestResult({ success: false, message: data.error || '连接失败' });
-      }
-    } catch (err) {
-      setTestResult({ success: false, message: '网络错误' });
+      setTestResult({ success: true, message: '连接成功！' });
+    } catch (err: any) {
+      setTestResult({ success: false, message: err.message || '网络错误' });
     } finally {
       setTesting(false);
     }

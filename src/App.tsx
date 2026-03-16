@@ -22,6 +22,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { CameraVisualizer } from './components/CameraVisualizer';
 import { SettingsModal } from './components/SettingsModal';
+import { safeFetchJson } from './utils/fetch';
 
 interface EditResponse {
   image_url?: string;
@@ -170,7 +171,7 @@ export default function App() {
     const z = dist * Math.cos(vRad) * Math.sin(hRad);
 
     try {
-      const response = await fetch('/api/edit-image', {
+      const data = await safeFetchJson('/api/edit-image', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -193,12 +194,6 @@ export default function App() {
         }),
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || '编辑失败');
-      }
-
       let finalResultUrl: string | null = null;
 
       if (data.task_id) {
@@ -211,12 +206,7 @@ export default function App() {
           await new Promise(resolve => setTimeout(resolve, 5000));
           attempts++;
 
-          const statusResponse = await fetch(`/api/task-status?task_id=${data.task_id}&model=${selectedModel}&volcengine_api_key=${encodeURIComponent(volcengineApiKey)}`);
-          const statusData = await statusResponse.json();
-
-          if (!statusResponse.ok) {
-            throw new Error(statusData.error || '查询任务状态失败');
-          }
+          const statusData = await safeFetchJson(`/api/task-status?task_id=${data.task_id}&model=${selectedModel}&volcengine_api_key=${encodeURIComponent(volcengineApiKey)}`);
 
           if (statusData.status === 'succeeded') {
             isDone = true;

@@ -459,6 +459,11 @@ Make sure the image looks like it's photographed from this new angle.`;
     return res.status(400).json({ error: "不支持的模型类型" });
   });
 
+  // API 404 handler - 对于 /api/* 的未匹配路由，返回 JSON 错误而不是 HTML
+  app.use('/api/*', (req, res) => {
+    res.status(404).json({ error: `API 路由不存在: ${req.method} ${req.originalUrl}` });
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
