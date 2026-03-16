@@ -1,0 +1,5 @@
+{
+  "name": "Qwen Image Angle Editor",
+  "description": "A professional tool for image rotation, flipping, and angle correction using Qwen-Image-Edit-Plus API.",
+  "requestFramePermissions": []
+}
