@@ -213,8 +213,14 @@ export default function App() {
             if (statusData.video_url) {
               finalResultUrl = statusData.video_url;
               setResult(finalResultUrl);
+            } else if (statusData.image_url) {
+              finalResultUrl = statusData.image_url;
+              setResult(finalResultUrl);
+            } else if (statusData.image_base64) {
+              finalResultUrl = `data:image/png;base64,${statusData.image_base64}`;
+              setResult(finalResultUrl);
             } else {
-              throw new Error('未返回视频结果');
+              throw new Error('未返回结果');
             }
           } else if (statusData.status === 'failed' || statusData.status === 'expired') {
             throw new Error(`视频生成失败: ${statusData.status}`);
