@@ -134,6 +134,7 @@ Make sure the image looks like it's photographed from this new angle.`;
 确保图片看起来是从这个新角度拍摄的。`;
 
   try {
+    const requestTimeoutMs = Number(process.env.API_REQUEST_TIMEOUT_MS || 180000);
     if (model === 'doubao-seedance-1-0-pro-250528') {
       const volcengineUrl = req.body.api_url || "https://ark.cn-beijing.volces.com/api/v3/contents/generations/tasks";
 
@@ -157,7 +158,7 @@ Make sure the image looks like it's photographed from this new angle.`;
             "Authorization": `Bearer ${volcengineApiKey}`,
             "Content-Type": "application/json"
           },
-          timeout: 30000
+          timeout: requestTimeoutMs
         }
       );
 
@@ -200,7 +201,7 @@ Make sure the image looks like it's photographed from this new angle.`;
             "Authorization": `Bearer ${volcengineApiKey}`,
             "Content-Type": "application/json"
           },
-          timeout: 60000
+          timeout: requestTimeoutMs
         }
       );
 
@@ -249,7 +250,7 @@ Make sure the image looks like it's photographed from this new angle.`;
             "Authorization": `Bearer ${volcengineApiKey}`,
             "Content-Type": "application/json"
           },
-          timeout: 60000
+          timeout: requestTimeoutMs
         }
       );
 
@@ -318,7 +319,7 @@ Make sure the image looks like it's photographed from this new angle.`;
           "Authorization": `Bearer ${apiKey}`,
           "Content-Type": "application/json"
         },
-        timeout: 60000
+        timeout: requestTimeoutMs
       }
     );
 
@@ -331,6 +332,13 @@ Make sure the image looks like it's photographed from this new angle.`;
     }
   } catch (error: any) {
     console.error("API Call Error:", error.response?.data || error.message);
+
+    if (error?.code === 'ECONNABORTED' || /timeout/i.test(String(error?.message))) {
+      return res.status(504).json({
+        error: "上游 API 调用超时（Vercel/网络环境可能较慢）",
+        detail: { message: error?.message, code: error?.code }
+      });
+    }
 
     const status = error.response?.status || 500;
     const errorData = error.response?.data || {};
