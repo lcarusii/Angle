@@ -440,7 +440,11 @@ async function startServer() {
 }
 
 // 只有直接运行此文件时才启动服务器
-if (require.main === module || import.meta.url === `file://${process.argv[1]}`) {
+const isDirectRunCjs =
+  typeof require !== 'undefined' && typeof module !== 'undefined' && require.main === module;
+const isDirectRunEsm = import.meta.url === `file://${process.argv[1]}`;
+
+if (isDirectRunCjs || isDirectRunEsm) {
   startServer();
 }
 
