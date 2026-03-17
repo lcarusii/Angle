@@ -4,7 +4,8 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
   // Keep imports lazy so production runtime doesn't load dev-only modules.
   return void (async () => {
     try {
-      const { app } = await import('../server');
+      // Vercel builds TS to JS; Node ESM runtime needs explicit .js extension.
+      const { app } = await import('../server.js');
       // @ts-ignore - Express and Vercel types are compatible at runtime.
       return app(req, res);
     } catch (err: any) {
