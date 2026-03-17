@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\ling.chen\\Qwen-Angle-main\\api"
+    ]
+  }
+}

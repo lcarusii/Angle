@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(taskkill //F //PID 51528)",
+      "Bash(taskkill //F //PID 61400)"
+    ]
+  }
+}

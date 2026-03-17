@@ -1,0 +1,27 @@
+`POST https:\u002F\u002Fark.cn-beijing.volces.com\u002Fapi\u002Fv3\u002Fimages\u002Fgenerations` [运行](https:\u002F\u002Fapi.volcengine.com\u002Fapi-explorer\u002F?action=ImageGenerations&groupName=%E5%9B%BE%E7%89%87%E7%94%9F%E6%88%90API&serviceCode=ark&version=2024-01-01&tab=2#N4IgTgpgzgDg9gOyhA+gMzmAtgQwC4gBcIArmADYgA0IUAlgF4REgBMA0tSAO74TY4wAayJoc5ZDSxwAJhErEZcEgCMccALTIIMyDiwaALBoAMG1gFYTADlbWuMMHCwwCxQPhmgUTTA-l6Ao2MAw-4CLeYB4tkHBgDOJgE2KgF+KgABygGHxgNf6gPSmgN2egCwegHEegCFugLCagCfKgOhKgGbx-oBFRoBjkYCTkZGA34qA2Ur+gKyugI76gOSagOJO-oDU5oCnpoBHphWA+Ib+gBVKI4Cf2oAr1oBOQf5wAMaATHaAy+b+gJKKgP1+gL-xgFRxY4CABoCEVoBTPv6A9maAj7b+gKGxgA3OgHnagNxygJJy-peAuyH+gNyugEbpgFgJgHH4wBjfoBvQOygAY5QAz2tkZoBLfUAQjqAQmtAIoagAIEp6AZXlAHBygC51c7+QAUsUNAPjuD38gHSzQKAOYzADMB52y6xagAlTQA55oBSELR0UA2DaAF7V-IAXU0xgB9FQDuioAvIMA9OaAbz1AM8GI0AHJqAAn1soB-PUAS5GAeASKmz-IAAAPW-kAs8qAEB1-IBA80AL4GMlr+QBc+oBUfUagDwVQA2aiAAL5AA)
+本文介绍图片生成模型如 Seedream 5.0 lite 的调用 API ，包括输入输出参数，取值范围，注意事项等信息，供您使用接口时查阅字段含义。
+
+**不同模型支持的图片生成能力简介**
+
+* **doubao\-seedream\-5.0\-lite==^new^==** **、doubao\-seedream\-4.5\u002F4.0**
+   * 生成组图（组图：基于您输入的内容，生成的一组内容关联的图片；需配置 **sequential_image_generation ** 为`auto` **）** 
+      * 多图生组图，根据您输入的 **++多张参考图片（2\-14）++ **  +++文本提示词++ 生成一组内容关联的图片（输入的参考图数量+最终生成的图片数量≤15张）。
+      * 单图生组图，根据您输入的 ++单张参考图片+文本提示词++ 生成一组内容关联的图片（最多生成14张图片）。
+      * 文生组图，根据您输入的 ++文本提示词++ 生成一组内容关联的图片（最多生成15张图片）。
+   * 生成单图（配置 **sequential_image_generation ** 为`disabled` **）** 
+      * 多图生图，根据您输入的 **++多张参考图片（2\-14）++ **  +++文本提示词++ 生成单张图片。
+      * 单图生图，根据您输入的 ++单张参考图片+文本提示词++ 生成单张图片。
+      * 文生图，根据您输入的 ++文本提示词++ 生成单张图片。
+* **doubao\-seedream\-3.0\-t2i**
+   * 文生图，根据您输入的 ++文本提示词++ 生成单张图片。
+* **doubao\-seededit\-** **3.0** **\-i2i**
+   * 图生图，根据您输入的 ++单张参考图片+文本提示词++ 生成单张图片。
+
+&nbsp;
+
+```mixin-react
+return (\u003CTabs\u003E
+\u003CTabs.TabPane title=\
+
+---
+
