@@ -6,9 +6,3 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // @ts-ignore - Express 和 Vercel 类型兼容
   app(req, res);
 }
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
