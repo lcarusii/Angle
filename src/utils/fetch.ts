@@ -48,10 +48,15 @@ export async function safeFetchJson<T = any>(
     }
 
     let errorMessage = `服务器返回了非 JSON 响应 (Content-Type: ${contentType || 'unknown'})`;
+    const textPreview = text
+      ? text.trim().slice(0, 400).replace(/\s+/g, ' ')
+      : '';
 
     // 检查是否是 HTML 响应
     if (text.trim().startsWith('<!') || text.trim().startsWith('<html') || text.includes('The page')) {
       errorMessage = '服务器返回了 HTML 页面而非 API 响应，请检查服务器是否正常运行';
+    } else if (textPreview) {
+      errorMessage = `${errorMessage}，响应内容摘要: ${textPreview}`;
     }
 
     throw new SafeFetchError(errorMessage, {
