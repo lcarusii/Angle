@@ -16,6 +16,7 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
             JSON.stringify({
               error: 'FUNCTION_INIT_FAILED',
               message: err?.message || String(err),
+              stack: err?.stack,
             })
           );
       }

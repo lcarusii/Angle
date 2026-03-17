@@ -71,7 +71,14 @@ export async function safeFetchJson<T = any>(
 
     if (!response.ok) {
       // 如果响应状态不是 2xx，即使是 JSON 也抛出错误
-      throw new SafeFetchError(data?.error || data?.message || `请求失败 (${response.status})`, {
+      const errorCode = data?.error;
+      const detailMsg = data?.message || data?.detail?.message;
+      const combined =
+        errorCode && detailMsg
+          ? `${errorCode}: ${detailMsg}`
+          : errorCode || detailMsg || `请求失败 (${response.status})`;
+
+      throw new SafeFetchError(combined, {
         status: response.status
       });
     }
